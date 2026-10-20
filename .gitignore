@@ -1,0 +1,124 @@
+
+# ===================================
+# Python cache and compiled files
+# ===================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg
+*.egg-info/
+.eggs/
+build/
+dist/
+
+# ===================================
+# macOS / Windows / Linux
+# ===================================
+.DS_Store
+.AppleDouble
+.LSOverride
+Thumbs.db
+Desktop.ini
+*~
+
+# ===================================
+# Python virtual environments
+# ===================================
+venv/
+.venv/
+env/
+.env/
+ENV/
+conda-env/
+
+# Keep example environment files
+!.env.example
+
+# ===================================
+# IDE and editor settings
+# ===================================
+.vscode/
+.idea/
+*.swp
+*.swo
+*.sublime-workspace
+
+# ===================================
+# Jupyter Notebook
+# ===================================
+.ipynb_checkpoints/
+
+# ===================================
+# Testing and linting
+# ===================================
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.tox/
+.nox/
+.coverage
+.coverage.*
+htmlcov/
+
+# ===================================
+# Logs and temporary files
+# ===================================
+*.log
+*.tmp
+*.temp
+*.bak
+*.backup
+*.pid
+.cache/
+tmp/
+temp/
+
+# ===================================
+# Machine learning checkpoints
+# ===================================
+*.pt
+*.pth
+*.ckpt
+*.h5
+*.hdf5
+*.onnx
+*.safetensors
+
+# ===================================
+# Experiment tracking
+# ===================================
+wandb/
+mlruns/
+lightning_logs/
+tensorboard/
+runs/
+
+# ===================================
+# Model outputs
+# ===================================
+checkpoints/
+weights/
+outputs/
+predictions/
+
+# ===================================
+# Datasets and large archives
+# ===================================
+datasets/
+data/raw/
+data/processed/
+*.zip
+*.tar
+*.tar.gz
+*.7z
+
+# ===================================
+# Local configuration and secrets
+# ===================================
+!.env.example
+*.pem
+*.key
+credentials.json
+secrets.json
+

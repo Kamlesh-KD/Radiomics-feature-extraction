@@ -1,0 +1,79 @@
+DATA_ROOT: "/Users/kamleshranabhat/Desktop/radiomics/dataset"
+IMAGES_DIR: "/Users/kamleshranabhat/Desktop/radiomics/dataset/imagesTr"
+LABELS_DIR: "/Users/kamleshranabhat/Desktop/radiomics/dataset/labelTr"
+PROJECT_ROOT: "/Users/kamleshranabhat/Desktop/radiomics/full_pipeline"
+CODEBASE_DIR: "/Users/kamleshranabhat/Desktop/radiomics/full_pipeline"
+
+OUTPUT_DIR: "/Users/kamleshranabhat/Desktop/radiomics/full_pipeline/outputs"
+MASK_DIR: "/Users/kamleshranabhat/Desktop/radiomics/full_pipeline/outputs/masks"
+FEATURE_DIR: "/Users/kamleshranabhat/Desktop/radiomics/full_pipeline/outputs/features"
+TABLE_DIR: "/Users/kamleshranabhat/Desktop/radiomics/full_pipeline/outputs/tables"
+FIGURE_DIR: "/Users/kamleshranabhat/Desktop/radiomics/full_pipeline/outputs/figures"
+REGISTRATION_DIR: "/Users/kamleshranabhat/Desktop/radiomics/full_pipeline/outputs/registration"
+BIAS_DIR: "/Users/kamleshranabhat/Desktop/radiomics/full_pipeline/outputs/bias_correction"
+REPRO_DIR: "/Users/kamleshranabhat/Desktop/radiomics/full_pipeline/outputs/reproducibility"
+
+REFERENCE_FEATURE_DIR : "/Users/kamleshranabhat/Desktop/radiomics/dataset/derived/features"
+
+N_CHANNELS: 4                 # imagesTr/<case>_0000 ... _0003
+SIDES: ["L", "R"]             # patient left / right breast
+MIN_COMPONENT_VOXELS: 1000    # despeckling threshold for the label
+
+NIFTI_DTYPES:
+  2: "uint8"
+  4: "<i2"
+  8: "<i4"
+  16: "<f4"
+  64: "<f8"
+  256: "int8"
+  512: "<u2"
+  768: "<u4"
+
+PIPELINE_OPTIONS:
+  registration: true
+  bias_correction: false
+
+REFERENCE_OPTIONS:
+  registration: false
+  bias_correction: false
+
+PARAMS:
+    setting: {
+        #intensity normalization
+        "normalize": True,
+        "normalizeScale": 100,
+        "removeOutliers": 3,
+        "voxelArrayShift": 300,
+        #geometry
+        "resampledPixelSpacing": [1, 1, 1],
+        "interpolator": "sitkBSpline",
+        "padDistance": 10,
+        "preCrop": True,
+        #discretization
+        "binCount": 32,
+        #ROI checks
+        "label": 1,
+        "correctMask": False,
+        "minimumROIDimensions": 3,
+        "minimumROISize": 100,
+        #texture options
+        "distances": [1],
+        "symmetricalGLCM": True,
+        "weightingNorm": None,
+        "force2D": False,
+    }
+    imageType: {
+        Original: {},
+        "LoG": {"sigma": [1.0, 2.0, 3.0, 4.0, 5.0]},
+        "Wavelet": {"wavelet": "coif1", "level": 1},
+        "Square": {},
+        "SquareRoot": {},
+        "Logarithm": {},
+        "Exponential": {},
+        "Gradient": {},
+        "LBP3D": {"lbp3DLevels": 2, "lbp3DIcosphereRadius": 1, "lbp3DIcosphereSubdivision": 1},
+    }
+    featureClass: ["shape", "firstorder", "glcm", "glrlm", "glszm", "gldm", "ngtdm"]
+
+THRESHOLD_REPRODUCIBILITY: 0.75
+THRESHOLD_REDUNDANCY: 0.995

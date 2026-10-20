@@ -1,0 +1,45 @@
+setting_overrides: {}
+
+# Feature classes computed for every filtered image. Shape features do not depend on intensities,
+# so they are computed once and stored only in features_raw_image.csv.
+featureClass: ["firstorder", "glcm", "glrlm", "glszm", "gldm", "ngtdm"]
+shape_in_raw_image: true
+
+# Pre-processing applied before PyRadiomics (keys as in setup.yaml PIPELINE_OPTIONS).
+# null -> use setup.yaml PIPELINE_OPTIONS.
+options: null
+
+# One entry per output table: features_<name>.csv.  `args` are passed to the filter as custom
+# PyRadiomics image-type settings (an empty dict means: use the module's DEFAULT_ARGS).
+filters:
+  raw_image:          {enabled: true, args: {}}
+  binary_patterns:    {enabled: true, args: {lbp3DLevels: 2, lbp3DIcosphereRadius: 1, lbp3DIcosphereSubdivision: 1}}
+  gradient_filter:    {enabled: true, args: {gradientUseSpacing: true}}
+  log_filter:         {enabled: true, args: {sigma: [1.0, 2.0, 3.0, 4.0, 5.0]}}
+  wavelet_filter:     {enabled: true, args: {wavelet: "coif1", level: 1, start_level: 0}}
+  square_filter:      {enabled: true, args: {}}
+  square_root_filter: {enabled: true, args: {}}
+  logarithmic_filter: {enabled: true, args: {}}
+  exponential_filter: {enabled: true, args: {}}
+  gabor_filter:
+    enabled: true
+    args:
+      gaborSigma: [2.0, 4.0]        # Gaussian envelope width (mm)
+      gaborLambda: [4.0, 8.0]       # wavelength of the carrier (mm); every sigma x lambda pair is computed
+      gaborGamma: 0.5               # spatial aspect ratio (envelope is sigma/gamma long along the stripes)
+      gaborOrientations: 8          # theta = k*pi/8, k = 0..7; responses are averaged (rotation invariance)
+      gaborPlanes: ["axial"]        # any of axial / coronal / sagittal; responses are averaged over planes
+      gaborTruncate: 3.0            # kernel radius = truncate * sigma / gamma
+  laws_filter:
+    enabled: true
+    args:
+      lawsKernels: ["L5E5E5", "E5E5E5", "L5S5S5", "S5S5S5", "E5W5R5", "R5R5R5"]   # letters for x, y, z
+      lawsRotationInvariant: true   # pool the response over the 24 right-angle rotations of the kernel
+      lawsPooling: "max"            # max | average
+      lawsEnergy: true              # replace the response by its local energy (mean |response|)
+      lawsEnergyDistance: 7         # energy window = (2 * distance + 1)^3 voxels
+
+# Output locations
+output:
+  feature_dir: "outputs/features/pyradiomics"
+  figure_dir: "outputs/figures/pyradiomics_filters"
